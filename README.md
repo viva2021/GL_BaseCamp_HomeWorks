@@ -14,5 +14,8 @@
 <p>![Картинка]("https://github.com/viva2021/GL_BaseCamp_HomeWorks/blob/main/screenshots/ansible_Hostfile.JPG?raw=true")</p>
 ![](screenshots/ansible_tree.JPG)
 <p>![Optional Text](../GL_BaseCamp_HomeWorks/screenshots/ansible_tree.JPG)</p>
+<p>
+    <img src="screenshots/ansible_Hostfile.JPG" />
+</p>
 </body>
 </html>
