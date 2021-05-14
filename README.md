@@ -12,7 +12,7 @@
 [alt text](screenshots/ansible_file_creat.JPG "")
 [alt text](screenshots/ansible_ver_read.JPG "")
 [alt text](screenshots/ansible_result.JPG "")
-![Картинка](https://github.com/viva2021/GL_BaseCamp_HomeWorks/raw/master//screenshots/ansible_cfg.JPG)
+![Картинка](https://github.com/viva2021/GL_BaseCamp_HomeWorks/blob/main/screenshots/ansible_Hostfile.JPG)
 ![](screenshots/ansible_tree.JPG)
 </body>
 </html>
