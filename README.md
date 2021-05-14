@@ -14,5 +14,6 @@
 [alt text](screenshots/ansible_result.JPG "")
 <p>![Картинка](https://github.com/viva2021/GL_BaseCamp_HomeWorks/blob/main/screenshots/ansible_Hostfile.JPG?raw=true)</p>
 ![](screenshots/ansible_tree.JPG)
+<p>![Optional Text](../master/screenshots/ansible_tree.JPG)</p>
 </body>
 </html>
