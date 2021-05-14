@@ -5,7 +5,7 @@
 <body>
 <h1>01 Home Work: Ansible</h1>
 <p></p>
-<p>[](/screenshots/ansible_tree.JPG?raw=true)</p>
+<p>[](ansible_tree.JPG?raw=true)</p>
 [alt text](screenshots/ansible_cfg.JPG "")
 [alt text](screenshots/ansible_Hostfile.JPG "")
 [alt text](screenshots/ansible_side.JPG "")
