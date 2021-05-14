@@ -5,9 +5,9 @@
 <body>
 <h1>01 Home Work: Ansible</h1>
 <p></p>
-<p>![](ansible_tree.JPG?raw=true)</p>
-<p>![alt text](screenshots/ansible_cfg.JPG "")</p>
-![alt text](screenshots/ansible_Hostfile.JPG "")
+<p>![ScreenShot](ansible_tree.JPG?raw=true)</p>
+<p>![ScreenShot](screenshots/ansible_cfg.JPG "")</p>
+![ScreenShot](/screenshots/ansible_Hostfile.JPG "")
 ![alt text](screenshots/ansible_side.JPG "")
 ![alt text](screenshots/ansible_file_creat.JPG "")
 ![alt text](screenshots/ansible_ver_read.JPG "")
