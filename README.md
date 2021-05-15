@@ -19,7 +19,7 @@
     <img src="screenshots/ansible_file_creat.JPG" />
 </p>
 <p>
-    <img src="screenshots/ansible_ver_read.JPG" />
+    <img src="screenshots/ansible_ver_read_new.JPG" />
 </p>
 <p>
     <img src="screenshots/ansible_result.JPG" />
