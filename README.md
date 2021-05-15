@@ -24,6 +24,9 @@
 <p>
     <img src="screenshots/ansible_result.JPG" />
 </p> 
+    <p>
+    <img src="screenshots/ansible_result_ver.JPG" />
+</p> 
 
 </body>
 </html>
