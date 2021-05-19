@@ -4,29 +4,24 @@
 <body>
 <h1>02 Home Work: Security</h1>
 <p>
-    <img src="screenshots/ansible_tree.JPG" />
+    <img src="screenshots/security_tree.JPG" />
 </p>
 <p>
-    <img src="screenshots/ansible_cfg.JPG" />
+    <img src="screenshots/security_side.JPG" />
 </p>
 <p>
-    <img src="screenshots/ansible_Hostfile.JPG" />
+    <img src="screenshots/security_task.JPG" />
 </p>
 <p>
-    <img src="screenshots/ansible_side.JPG" />
+    <img src="screenshots/security_result.JPG" />
 </p>
 <p>
-    <img src="screenshots/ansible_file_creat.JPG" />
+    <img src="screenshots/security_AWS_result_1.JPG" />
 </p>
 <p>
-    <img src="screenshots/ansible_ver_read_new.JPG" />
+    <img src="screenshots/security_AWS_result_2.JPG" />
 </p>
-<p>
-    <img src="screenshots/ansible_result.JPG" />
-</p> 
-    <p>
-    <img src="screenshots/ansible_result_ver.JPG" />
-</p> 
+
 
 </body>
 </html>
