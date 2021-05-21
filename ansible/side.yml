@@ -1,0 +1,17 @@
+---
+#- name: File Creating
+#  hosts: iaas
+#  become: yes
+#  roles:
+#    - file_creating
+
+#- name: Version Reading
+#  hosts: all
+#  roles:
+#    - version_reading
+
+- name: Authentification Rules
+  hosts: group_1
+  become: yes
+  roles:
+    - auth_rules

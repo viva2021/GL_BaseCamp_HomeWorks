@@ -1,0 +1,9 @@
+---
+# task file for version_reading
+  - name: Fetch a linux distro name/version
+    shell: cat /etc/os-release
+    register: response
+
+  - name: print a linux distro name/version
+    debug:
+      var: response.stdout_lines

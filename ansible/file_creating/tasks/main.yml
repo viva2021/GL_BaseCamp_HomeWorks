@@ -1,0 +1,11 @@
+---
+# task file for file_creating
+  - name: Creating a empty file /etc/iaac with rigths 0500
+    copy:
+      content: ""
+      dest: /etc/iaac
+      force: no
+      group: sys
+      owner: root
+      mode: 0500
+
