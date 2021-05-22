@@ -15,3 +15,9 @@
   become: yes
   roles:
     - auth_rules
+
+- name: Tcpwrappers Rules
+  hosts: group_2
+  become: yes
+  roles:
+    - tcpwrappers_rules
