@@ -10,3 +10,6 @@ AWS_client_03 ansible_host=15.237.142.8 ansible_user=ubuntu ansible_ssh_private_
 [iaas:children]
 group_1
 group_2
+
+[group_4]
+GCP_client_01 ansible_host=34.118.71.238

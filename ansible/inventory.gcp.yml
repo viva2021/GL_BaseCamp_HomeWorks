@@ -1,0 +1,5 @@
+plugin: gcp_compute
+projects:
+  - graphite-playground
+auth_kind: serviceaccount
+service_account_file: /home/slava/ansible/storied-shelter-314915-29671931d67c.json

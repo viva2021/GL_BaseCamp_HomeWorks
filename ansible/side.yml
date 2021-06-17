@@ -10,14 +10,21 @@
 #  roles:
 #    - version_reading
 
-- name: Authentification Rules
-  hosts: group_1
-  become: yes
-  roles:
-    - auth_rules
+#- name: Authentification Rules
+#  hosts: group_1
+#  become: yes
+#  roles:
+#    - auth_rules
 
-- name: Tcpwrappers Rules
-  hosts: group_2
+#- name: Tcpwrappers Rules
+#  hosts: group_2
+#  become: yes
+#  roles:
+#    - tcpwrappers_rules
+
+- name: CIS Access, Authentication and Authorization
+  hosts: group_4
   become: yes
+  ignore_errors: yes
   roles:
-    - tcpwrappers_rules
+    - cis_aaa  

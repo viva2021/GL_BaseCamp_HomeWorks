@@ -1,0 +1,18 @@
+---
+#Variables for cis_aaa role
+
+    allowuserlist:
+      slava
+  
+    allowgrouplist:
+
+    denyuserlist:
+      user_4
+      user_5
+      user_6
+
+    denygrouplist:
+      group_4
+      group_5
+      group_6
+

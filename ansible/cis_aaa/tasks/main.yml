@@ -1,0 +1,698 @@
+---
+# task file for CIS Access, Authentication and Autorization
+
+#----------------------------------------------------------------
+  - name: 5.1.1 Remediation
+    shell:
+      systemctl --now enable crond
+
+  - name: 5.1.1 Ensure cron daemon is enabled
+    shell: systemctl is-enabled crond
+    register: response
+
+  - name: 5.1.1 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.2 Remediation
+    shell: |
+      sudo chown root:root /etc/crontab
+      sudo chmod og-rwx /etc/crontab
+
+  - name: 5.1.2 Ensure permissions on /etc/crontab are configured
+    shell: stat /etc/crontab
+    register: response
+
+  - name: 5.1.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.3 Remediation
+    shell: |
+      sudo chown root:root /etc/cron.hourly
+      sudo chmod og-rwx /etc/cron.hourly
+
+  - name: 5.1.3 Ensure permissions on /etc/cron.hourly are configured
+    shell: stat /etc/cron.hourly
+    register: response
+
+  - name: 5.1.3 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.4 Remediation
+    shell: |
+      sudo chown root:root /etc/cron.daily
+      sudo chmod og-rwx /etc/cron.daily
+
+  - name: 5.1.4 Ensure permissions on /etc/cron.daily are configured
+    shell: stat /etc/cron.daily
+    register: response
+
+  - name: 5.1.4 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.5 Remediation
+    shell: |
+      sudo chown root:root /etc/cron.weekly
+      sudo chmod og-rwx /etc/cron.weekly
+
+  - name: 5.1.5 Ensure permissions on /etc/cron.weekly are configured
+    shell: stat /etc/cron.weekly
+    register: response
+
+  - name: 5.1.5 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.6 Remediation
+    shell: |
+      sudo chown root:root /etc/cron.monthly
+      sudo chmod og-rwx /etc/cron.monthly
+
+  - name: 5.1.6 Ensure permissions on /etc/cron.monthly are configured
+    shell: stat /etc/cron.monthly
+    register: response
+
+  - name: 5.1.6 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.7 Remediation
+    shell: |
+      sudo chown root:root /etc/cron.d
+      sudo chmod og-rwx /etc/cron.d
+
+  - name: 5.1.7 Ensure permissions on /etc/cron.d are configured
+    shell: stat /etc/cron.d
+    register: response
+
+  - name: 5.1.7 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.1.8 Remediation
+    shell: |
+      sudo rm /etc/cron.deny
+      sudo rm /etc/at.deny
+      sudo touch /etc/cron.allow
+      sudo touch /etc/at.allow
+      sudo chmod og-rwx /etc/cron.allow
+      sudo chmod og-rwx /etc/at.allow
+      sudo chown root:root /etc/cron.allow
+      sudo chown root:root /etc/at.allow
+
+  - name: 5.1.8 Ensure at/cron is restricted to authorized users
+    shell: |
+      [ -e /etc/cron.deny ] && stat /etc/cron.deny
+      [ -e /etc/at.deny ] && stat /etc/at.deny
+      stat /etc/cron.allow
+      stat /etc/at.allow
+    register: response
+
+  - name: 5.1.8 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.1 Remediation
+    shell: |
+      sudo chown root:root /etc/ssh/sshd_config
+      sudo chmod og-rwx /etc/ssh/sshd_config
+
+  - name: 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured
+    shell: stat /etc/ssh/sshd_config
+    register: response
+
+  - name: 5.2.1 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete AllowUsers param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?AllowUsers'
+      state: absent
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add AllowUsers param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'AllowUsers {{allowuserlist}}'
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete AllowGroups param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?AllowGroups'
+      state: absent
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add AllowGroups param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'AllowGroups {{allowgrouplist}}'
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete DenyUsers param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?DenyUsers'
+      state: absent
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add DenyUsers param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'DenyUsers {{denyuserlist}}'
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete DenyGroups param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?DenyGroups'
+      state: absent
+
+  - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add DenyGroups param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'DenyGroups {{denygrouplist}}'
+
+  - name: 5.2.2 Ensure SSH access is limited
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -Pi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$'
+      sudo grep -Pi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.3 Remediation
+    shell: |
+      sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod u-x,g-wx,o-rwx {} \;
+      sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:ssh_keys {} \;
+
+  - name: 5.2.3 Ensure permissions on SSH private host key files are configured
+    shell: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec stat {} \;
+    register: response
+
+  - name: 5.2.3 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.4 Remediation
+    shell: |
+      sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chmod u-x,go-wx {} \;
+      sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chown root:root {} \;
+
+  - name: 5.2.4 Ensure permissions on SSH public host key files are configured
+    shell: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec stat {} \;
+    register: response
+
+  - name: 5.2.4 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.5 Remediation. Editing the /etc/ssh/sshd_config file (Delete LogLevel param)
+    lineinfile: 
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?LogLevel'
+      state: absent
+
+  - name: 5.2.5 Remediation. Editing the /etc/ssh/sshd_config file (Add LogLevel param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'LogLevel VERBOSE'
+
+  - name: 5.2.5 Ensure SSH LogLevel is appropriatee
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep loglevel
+      sudo grep -i 'loglevel' /etc/ssh/sshd_config | grep -Evi '(VERBOSE)'
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.5 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.6 Remediation. Editing the /etc/ssh/sshd_config file (Delete X11Forwarding param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?X11Forwarding'
+      state: absent
+
+  - name: 5.2.6 Remediation. Editing the /etc/ssh/sshd_config file (Add X11Forwarding param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'X11Forwarding no'
+
+  - name: 5.2.6 Ensure SSH X11 forwarding is disabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i x11forwarding
+      sudo grep -Ei '^\s*x11forwarding\s+yes' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.6 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.7 Remediation. Editing the /etc/ssh/sshd_config file (Delete MaxAuthTries param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?MaxAuthTries'
+      state: absent
+
+  - name: 5.2.7 Remediation. Editing the /etc/ssh/sshd_config file (Add MaxAuthTries param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'MaxAuthTries 4'
+
+  - name: 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less
+    shell: |
+      sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep maxauthtries
+      grep -Ei '^\s*maxauthtries\s+([5-9]|[1-9][0-9]+)' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.7 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.8 Remediation. Editing the /etc/ssh/sshd_config file (Delete IgnoreRhosts param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?IgnoreRhosts'
+      state: absent
+
+  - name: 5.2.8 Remediation. Editing the /etc/ssh/sshd_config file (Add IgnoreRhosts param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'IgnoreRhosts yes'
+
+  - name: 5.2.8 Ensure SSH IgnoreRhosts is enabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep ignorerhosts
+      sudo grep -Ei '^\s*ignorerhosts\s+no\b' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.8 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.9 Remediation. Editing the /etc/ssh/sshd_config file (Delete HostbasedAuthentication param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?HostbasedAuthentication'
+      state: absent
+
+  - name: 5.2.9 Remediation. Editing the /etc/ssh/sshd_config file (Add HostbasedAuthentication param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'HostbasedAuthentication no'
+
+  - name: 5.2.9 Ensure SSH HostbasedAuthentication is disabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep hostbasedauthentication
+      sudo grep -Ei '^\s*HostbasedAuthentication\s+yes' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.9 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.10 Remediation. Editing the /etc/ssh/sshd_config file (Delete PermitRootLogin param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?PermitRootLogin'
+      state: absent
+
+  - name: 5.2.10 Remediation. Editing the /etc/ssh/sshd_config file (Add PermitRootLogin param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'PermitRootLogin no'
+
+  - name: 5.2.10 Ensure SSH root login is disabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep permitrootlogin
+      sudo grep -Ei '^\s*PermitRootLogin\s+yes' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.10 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.11 Remediation. Editing the /etc/ssh/sshd_config file (Delete PermitEmptyPasswords param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?PermitEmptyPasswords'
+      state: absent
+
+  - name: 5.2.11 Remediation. Editing the /etc/ssh/sshd_config file (Add PermitEmptyPasswords param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'PermitEmptyPasswords no'
+
+  - name: 5.2.11 Ensure SSH PermitEmptyPasswords is disabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep permitemptypasswords
+      sudo grep -Ei '^\s*PermitEmptyPasswords\s+yes' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.11 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.12 Remediation. Editing the /etc/ssh/sshd_config file (Delete PermitUserEnvironment param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?PermitUserEnvironment'
+      state: absent
+
+  - name: 5.2.12 Remediation. Editing the /etc/ssh/sshd_config file (Add PermitUserEnvironment param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'PermitUserEnvironment no'
+
+  - name: 5.2.12 Ensure SSH PermitUserEnvironment is disabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep permituserenvironment
+      sudo grep -Ei '^\s*PermitUserEnvironment\s+yes' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.12 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Delete ClientAliveInterval param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?ClientAliveInterval'
+      state: absent
+
+  - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Add ClientAliveInterval param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'ClientAliveInterval 900'
+
+  - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Delete ClientAliveCountMax param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?ClientAliveCountMax'
+      state: absent
+
+  - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Add ClientAliveCountMax param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'ClientAliveCountMax 0'
+
+  - name: 5.2.13 Ensure SSH Idle Timeout Interval is configured
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep clientaliveinterval
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep clientalivecountmax
+      sudo grep -Ei '^\s*ClientAliveInterval\s+(0|9[0-9][1-9]|[1-9][0-9][0-9][0-9]+|1[6-9]m|[2-9][0-9]m|[1-9][0-9][0-9]+m)\b' /etc/ssh/sshd_config
+      sudo grep -Ei '^\s*ClientAliveCountMax\s+([1-9]|[1-9][0-9]+)\b' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.13 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.14 Remediation. Editing the /etc/ssh/sshd_config file (Delete LoginGraceTime param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?LoginGraceTime'
+      state: absent
+
+  - name: 5.2.14 Remediation. Editing the /etc/ssh/sshd_config file (Add LoginGraceTime param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'LoginGraceTime 60'
+
+  - name: 5.2.14 Ensure SSH LoginGraceTime is set to one minute or less
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep logingracetime
+      sudo grep -Ei '^\s*LoginGraceTime\s+(0|6[1-9]|[7-9][0-9]|[1-9][0-9][0-9]+|[^1]m)' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.14 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.15 Remediation. Editing the /etc/ssh/sshd_config file (Delete Banner param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?Banner'
+      state: absent
+
+  - name: 5.2.15 Remediation. Editing the /etc/ssh/sshd_config file (Add Banner param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'Banner /etc/issue.net'
+
+  - name: 5.2.15 Ensure SSH warning banner is configured
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep banner
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.15 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.16 Remediation. Editing the /etc/ssh/sshd_config file (Delete UsePAM param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?UsePAM'
+      state: absent
+
+  - name: 5.2.16 Remediation. Editing the /etc/ssh/sshd_config file (Add UsePAM param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'UsePAM yes'
+
+  - name: 5.2.16 Ensure SSH PAM is enabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i usepam
+      sudo grep -Ei '^\s*UsePAM\s+no' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.16 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.17 Remediation. Editing the /etc/ssh/sshd_config file (Delete AllowTcpForwarding param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?AllowTcpForwarding'
+      state: absent
+
+  - name: 5.2.17 Remediation. Editing the /etc/ssh/sshd_config file (Add AllowTcpForwarding param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'AllowTcpForwarding no'
+
+  - name: 5.2.17 Ensure SSH AllowTcpForwarding is disabled
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i allowtcpforwarding
+      sudo grep -Ei '^\s*AllowTcpForwarding\s+yes' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.17 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.18 Remediation. Editing the /etc/ssh/sshd_config file (Delete maxstartups param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?maxstartups'
+      state: absent
+
+  - name: 5.2.18 Remediation. Editing the /etc/ssh/sshd_config file (Add maxstartups param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'maxstartups 10:30:60'
+
+  - name: 5.2.18 Ensure SSH MaxStartups is configured
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i maxstartups
+      sudo grep -Ei '^\s*maxstartups\s+(((1[1-9]|[1-9][0-9][0-9]+):([0-9]+):([0-9]+))|(([0-9]+):(3[1-9]|[4-9][0-9]|[1-9][0-9][0-9]+):([0-9]+))|(([0-9]+):([0-9]+):(6[1-9]|[7-9][0-9]|[1-9][0-9][0-9]+)))' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.18 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.19 Remediation. Editing the /etc/ssh/sshd_config file (Delete MaxSessions param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '(?i)^#?MaxSessions'
+      state: absent
+
+  - name: 5.2.19 Remediation. Editing the /etc/ssh/sshd_config file (Add MaxSessions param)
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      insertafter: EOF
+      line: 'MaxSessions 4'
+
+  - name: 5.2.19 Ensure SSH MaxSessions is set to 4 or less
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep -i maxsessions
+      sudo grep -Ei '^\s*MaxSessions\s+(1[1-9]|[2-9][0-9]|[1-9][0-9][0-9]+)' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.19 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.2.20 Remediation
+    shell: |
+      sudo sed -ri "s/^\s*(CRYPTO_POLICY\s*=.*)$/# \1/" /etc/sysconfig/sshd
+      sudo systemctl reload sshd
+
+  - name: 5.2.20 Ensure system-wide crypto policy is not over-ridden
+    shell: |
+      sudo grep -i '^\s*CRYPTO_POLICY=' /etc/sysconfig/sshd
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.20 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  # - name: 5.3.1 Remediation
+    # shell: |
+      # sudo authselect create-profile custom-profile-4 -b sssd --symlink-meta
+
+  # - name: 5.3.1 Create custom authselect profile
+    # shell: |
+      # authselect current | grep "Profile ID: custom"
+    # register: response
+    # failed_when: "'FAILED' in response.stderr"
+
+  # - name: 5.3.1 print result
+    # debug:
+      # var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.3.2 Remediation
+    shell: |
+      sudo authselect select custom/custom-profile with-sudo with-faillock without-nullok --force
+
+  - name: 5.3.2 Select authselect profile
+    shell: |
+      authselect current
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.3.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.3.3 Remediation
+    shell: |
+      sudo authselect select custom/custom-profile with-sudo with-faillock without-nullok --force
+
+  - name: 5.3.3 Ensure authselect includes with-faillock
+    shell: |
+      grep pam_faillock.so /etc/authselect/password-auth /etc/authselect/system-auth
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.3.3 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+
+
+
+
+
+
