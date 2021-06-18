@@ -2,6 +2,9 @@
 #Variables for cis_aaa role
 
     allowuserlist:
+    #max users=3
+      root
+      vivanenk
       slava
   
     allowgrouplist:
@@ -16,3 +19,4 @@
       group_5
       group_6
 
+    

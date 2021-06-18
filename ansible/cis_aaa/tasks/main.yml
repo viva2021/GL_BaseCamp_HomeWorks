@@ -2,7 +2,7 @@
 # task file for CIS Access, Authentication and Autorization
 
 #----------------------------------------------------------------
-  - name: 5.1.1 Remediation
+  - name: 5.1.1 Remediation. Enabling crond
     shell:
       systemctl --now enable crond
 
@@ -16,7 +16,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.2 Remediation
+  - name: 5.1.2 Remediation. Configuring permissions on /etc/crontab
     shell: |
       sudo chown root:root /etc/crontab
       sudo chmod og-rwx /etc/crontab
@@ -31,7 +31,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.3 Remediation
+  - name: 5.1.3 Remediation. Configuring permissions on /etc/cron.hourly
     shell: |
       sudo chown root:root /etc/cron.hourly
       sudo chmod og-rwx /etc/cron.hourly
@@ -46,7 +46,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.4 Remediation
+  - name: 5.1.4 Remediation. Configuring permissions on /etc/cron.daily
     shell: |
       sudo chown root:root /etc/cron.daily
       sudo chmod og-rwx /etc/cron.daily
@@ -61,7 +61,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.5 Remediation
+  - name: 5.1.5 Remediation. Configuring permissions on /etc/cron.weekly
     shell: |
       sudo chown root:root /etc/cron.weekly
       sudo chmod og-rwx /etc/cron.weekly
@@ -76,7 +76,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.6 Remediation
+  - name: 5.1.6 Remediation. Configuring permissions on /etc/cron.monthly
     shell: |
       sudo chown root:root /etc/cron.monthly
       sudo chmod og-rwx /etc/cron.monthly
@@ -91,7 +91,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.7 Remediation
+  - name: 5.1.7 Remediation. Configuring permissions on /etc/cron.d
     shell: |
       sudo chown root:root /etc/cron.d
       sudo chmod og-rwx /etc/cron.d
@@ -106,7 +106,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.1.8 Remediation
+  - name: 5.1.8 Remediation for at/cron will restricted to authorized users
     shell: |
       sudo rm /etc/cron.deny
       sudo rm /etc/at.deny
@@ -131,7 +131,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.2.1 Remediation
+  - name: 5.2.1 Remediation. Configuring permissions on /etc/ssh/sshd_config
     shell: |
       sudo chown root:root /etc/ssh/sshd_config
       sudo chmod og-rwx /etc/ssh/sshd_config
@@ -149,7 +149,7 @@
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete AllowUsers param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?AllowUsers'
+      regexp: '^#?\s*(?i)AllowUsers'
       state: absent
 
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add AllowUsers param)
@@ -161,7 +161,7 @@
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete AllowGroups param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?AllowGroups'
+      regexp: '^#?\s*(?i)AllowGroups'
       state: absent
 
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add AllowGroups param)
@@ -173,7 +173,7 @@
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete DenyUsers param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?DenyUsers'
+      regexp: '^#?\s*(?i)DenyUsers'
       state: absent
 
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add DenyUsers param)
@@ -185,7 +185,7 @@
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Delete DenyGroups param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?DenyGroups'
+      regexp: '^#?\s*(?i)DenyGroups'
       state: absent
 
   - name: 5.2.2 Remediation. Editing the /etc/ssh/sshd_config file (Add DenyGroups param)
@@ -207,7 +207,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.2.3 Remediation
+  - name: 5.2.3 Remediation. Configuring permissions on SSH private host key files
     shell: |
       sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod u-x,g-wx,o-rwx {} \;
       sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:ssh_keys {} \;
@@ -222,7 +222,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.2.4 Remediation
+  - name: 5.2.4 Remediation. Configuring permissions on SSH SSH public host key files
     shell: |
       sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chmod u-x,go-wx {} \;
       sudo find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chown root:root {} \;
@@ -240,7 +240,7 @@
   - name: 5.2.5 Remediation. Editing the /etc/ssh/sshd_config file (Delete LogLevel param)
     lineinfile: 
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?LogLevel'
+      regexp: '^#?\s*(?i)LogLevel'
       state: absent
 
   - name: 5.2.5 Remediation. Editing the /etc/ssh/sshd_config file (Add LogLevel param)
@@ -265,7 +265,7 @@
   - name: 5.2.6 Remediation. Editing the /etc/ssh/sshd_config file (Delete X11Forwarding param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?X11Forwarding'
+      regexp: '^#?\s*(?i)Forwarding'
       state: absent
 
   - name: 5.2.6 Remediation. Editing the /etc/ssh/sshd_config file (Add X11Forwarding param)
@@ -290,7 +290,7 @@
   - name: 5.2.7 Remediation. Editing the /etc/ssh/sshd_config file (Delete MaxAuthTries param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?MaxAuthTries'
+      regexp: '^#?\s*(?i)MaxAuthTries'
       state: absent
 
   - name: 5.2.7 Remediation. Editing the /etc/ssh/sshd_config file (Add MaxAuthTries param)
@@ -315,7 +315,7 @@
   - name: 5.2.8 Remediation. Editing the /etc/ssh/sshd_config file (Delete IgnoreRhosts param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?IgnoreRhosts'
+      regexp: '^#?\s*(?i)IgnoreRhosts'
       state: absent
 
   - name: 5.2.8 Remediation. Editing the /etc/ssh/sshd_config file (Add IgnoreRhosts param)
@@ -340,7 +340,7 @@
   - name: 5.2.9 Remediation. Editing the /etc/ssh/sshd_config file (Delete HostbasedAuthentication param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?HostbasedAuthentication'
+      regexp: '^#?\s*(?i)HostbasedAuthentication'
       state: absent
 
   - name: 5.2.9 Remediation. Editing the /etc/ssh/sshd_config file (Add HostbasedAuthentication param)
@@ -365,7 +365,7 @@
   - name: 5.2.10 Remediation. Editing the /etc/ssh/sshd_config file (Delete PermitRootLogin param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?PermitRootLogin'
+      regexp: '^#?\s*(?i)PermitRootLogin'
       state: absent
 
   - name: 5.2.10 Remediation. Editing the /etc/ssh/sshd_config file (Add PermitRootLogin param)
@@ -390,7 +390,7 @@
   - name: 5.2.11 Remediation. Editing the /etc/ssh/sshd_config file (Delete PermitEmptyPasswords param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?PermitEmptyPasswords'
+      regexp: '^#?\s*(?i)PermitEmptyPasswords'
       state: absent
 
   - name: 5.2.11 Remediation. Editing the /etc/ssh/sshd_config file (Add PermitEmptyPasswords param)
@@ -415,7 +415,7 @@
   - name: 5.2.12 Remediation. Editing the /etc/ssh/sshd_config file (Delete PermitUserEnvironment param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?PermitUserEnvironment'
+      regexp: '^#?\s*(?i)PermitUserEnvironment'
       state: absent
 
   - name: 5.2.12 Remediation. Editing the /etc/ssh/sshd_config file (Add PermitUserEnvironment param)
@@ -440,7 +440,7 @@
   - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Delete ClientAliveInterval param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?ClientAliveInterval'
+      regexp: '^#?\s*(?i)ClientAliveInterval'
       state: absent
 
   - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Add ClientAliveInterval param)
@@ -452,7 +452,7 @@
   - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Delete ClientAliveCountMax param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?ClientAliveCountMax'
+      regexp: '^#?\s*(?i)ClientAliveCountMax'
       state: absent
 
   - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file (Add ClientAliveCountMax param)
@@ -479,7 +479,7 @@
   - name: 5.2.14 Remediation. Editing the /etc/ssh/sshd_config file (Delete LoginGraceTime param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?LoginGraceTime'
+      regexp: '^#?\s*(?i)LoginGraceTime'
       state: absent
 
   - name: 5.2.14 Remediation. Editing the /etc/ssh/sshd_config file (Add LoginGraceTime param)
@@ -504,7 +504,7 @@
   - name: 5.2.15 Remediation. Editing the /etc/ssh/sshd_config file (Delete Banner param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?Banner'
+      regexp: '^#?\s*(?i)Banner'
       state: absent
 
   - name: 5.2.15 Remediation. Editing the /etc/ssh/sshd_config file (Add Banner param)
@@ -528,7 +528,7 @@
   - name: 5.2.16 Remediation. Editing the /etc/ssh/sshd_config file (Delete UsePAM param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?UsePAM'
+      regexp: '^#?\s*(?i)UsePAM'
       state: absent
 
   - name: 5.2.16 Remediation. Editing the /etc/ssh/sshd_config file (Add UsePAM param)
@@ -553,7 +553,7 @@
   - name: 5.2.17 Remediation. Editing the /etc/ssh/sshd_config file (Delete AllowTcpForwarding param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?AllowTcpForwarding'
+      regexp: '^#?\s*(?i)AllowTcpForwarding'
       state: absent
 
   - name: 5.2.17 Remediation. Editing the /etc/ssh/sshd_config file (Add AllowTcpForwarding param)
@@ -578,7 +578,7 @@
   - name: 5.2.18 Remediation. Editing the /etc/ssh/sshd_config file (Delete maxstartups param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?maxstartups'
+      regexp: '^#?\s*(?i)maxstartups'
       state: absent
 
   - name: 5.2.18 Remediation. Editing the /etc/ssh/sshd_config file (Add maxstartups param)
@@ -603,7 +603,7 @@
   - name: 5.2.19 Remediation. Editing the /etc/ssh/sshd_config file (Delete MaxSessions param)
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: '(?i)^#?MaxSessions'
+      regexp: '^#?\s*(?i)MaxSessions'
       state: absent
 
   - name: 5.2.19 Remediation. Editing the /etc/ssh/sshd_config file (Add MaxSessions param)
@@ -625,7 +625,7 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.2.20 Remediation
+  - name: 5.2.20 Remediation for system-wide crypto policy will not over-ridden
     shell: |
       sudo sed -ri "s/^\s*(CRYPTO_POLICY\s*=.*)$/# \1/" /etc/sysconfig/sshd
       sudo systemctl reload sshd
@@ -642,25 +642,25 @@
 
 #----------------------------------------------------------------
 
-  # - name: 5.3.1 Remediation
-    # shell: |
-      # sudo authselect create-profile custom-profile-4 -b sssd --symlink-meta
+  - name: 5.3.1 Remediation. Creating custom authselect profile
+    shell: |
+      sudo authselect create-profile custom-profile-3 -b sssd --symlink-meta
 
-  # - name: 5.3.1 Create custom authselect profile
-    # shell: |
-      # authselect current | grep "Profile ID: custom"
-    # register: response
-    # failed_when: "'FAILED' in response.stderr"
+  - name: 5.3.1 Create custom authselect profile
+    shell: |
+      authselect current | grep "Profile ID: custom"
+    register: response
+    failed_when: "'FAILED' in response.stderr"
 
-  # - name: 5.3.1 print result
-    # debug:
-      # var: response.stdout_lines
+  - name: 5.3.1 print result
+    debug:
+      var: response.stdout_lines
 
 #----------------------------------------------------------------
 
-  - name: 5.3.2 Remediation
+  - name: 5.3.2 Remediation. Selecting authselect profile
     shell: |
-      sudo authselect select custom/custom-profile with-sudo with-faillock without-nullok --force
+      sudo authselect select custom/custom-profile-3 with-sudo with-faillock without-nullok --force
 
   - name: 5.3.2 Select authselect profile
     shell: |
@@ -674,9 +674,9 @@
 
 #----------------------------------------------------------------
 
-  - name: 5.3.3 Remediation
+  - name: 5.3.3 Remediation for authselect will includes with-faillock
     shell: |
-      sudo authselect select custom/custom-profile with-sudo with-faillock without-nullok --force
+      sudo authselect select custom/custom-profile-2 with-sudo with-faillock without-nullok --force
 
   - name: 5.3.3 Ensure authselect includes with-faillock
     shell: |
@@ -690,9 +690,364 @@
 
 #----------------------------------------------------------------
 
+  - name: 5.4.1 Remediation. Editing the /etc/security/pwquality.conf file (Delete minlen param)
+    lineinfile:
+      dest: /etc/security/pwquality.conf
+      regexp: '^#?\s*(?i)minlen'
+      state: absent
 
+  - name: 5.4.1 Remediation. Editing the /etc/security/pwquality.conf file (Add minlen param)
+    lineinfile:
+      dest: /etc/security/pwquality.conf
+      insertafter: EOF
+      line: 'minlen 14'
 
+  - name: 5.4.1 Remediation. Editing the /etc/security/pwquality.conf file (Delete minclass param)
+    lineinfile:
+      dest: /etc/security/pwquality.conf
+      regexp: '^#?\s*(?i)minclass'
+      state: absent
 
+  - name: 5.4.1 Remediation. Editing the /etc/security/pwquality.conf file (Add minclass param)
+    lineinfile:
+      dest: /etc/security/pwquality.conf
+      insertafter: EOF
+      line: 'minclass 4'
 
+  - name: 5.4.1 Remediation
+    shell:
+      CP=$(authselect current | awk 'NR == 1 {print $3}' | grep custom/) for FN in system-auth password-auth; do [[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN [[ -z $(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*enforce-for-root\s*.*$' $PTF) ]] && sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 enforce-for-root/' $PTF [[ -n $(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*\s+retry=\S+\s*.*$' $PTF) ]] && sed -ri '/pwquality/s/retry=\S+/retry=3/' $PTF || sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 retry=3/' $PTF done authselect apply-changes
 
+  - name: 5.4.1 Ensure password creation requirements are configured
+    shell: |
+      sudo grep pam_pwquality.so /etc/pam.d/system-auth /etc/pam.d/password-auth
+      sudo grep ^minlen /etc/security/pwquality.conf
+      grep ^minclass /etc/security/pwquality.conf
+    register: response
+    failed_when: "'FAILED' in response.stderr"
 
+  - name: 5.4.1 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.4.2 Remediation. Configuring lockout for failed password attempts
+    shell:
+      CP=$(authselect current | awk 'NR == 1 {print $3}' | grep custom/) for FN in system-auth password-auth; do [[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/deny=\S+/deny=5/g' $PTF || sed -ri 's/^\^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 deny=5 \3/' $PTF [[ -n $(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' $PTF) ]] && sed -ri '/pam_faillock.so/s/unlock_time=\S+/unlock_time=900/g' $PTF || sed -ri 's/^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 unlock_time=900 \3/' $PTF done authselect apply-changes
+
+  - name: 5.4.2 Ensure lockout for failed password attempts is configured
+    shell: |
+      sudo grep -E '^\s*auth\s+required\s+pam_faillock.so\s+' /etc/pam.d/password-auth /etc/pam.d/system-auth
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.4.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.4.3 Remediation. Configuring limitation of password reuse
+    shell:
+      #!/bin/bash if authselect current | awk 'NR == 1 {print $3}' | grep -q custom/; then PTF=/etc/authselect/"$(authselect current | awk 'NR == 1 {print $3}' | grep custom/)"/system-auth else PTF=/etc/authselect/system-auth fi if grep -Eq '^\s*password\s+(sufficient\s+pam_unix|requi(red|site)\s+pam_pwhistory).so\s+([^#]+\s+)*remember=\S+\s*.*$' $PTF; then sed -ri 's/^\s*(password\s+(requisite|sufficient)\s+(pam_pwhistory\.so|pam_unix\.so)\s+)(.*)(remember=\S+\s*)(.*)$/\1\4 remember=5 \6/' $PTF else sed -ri 's/^\s*(password\s+(requisite|sufficient)\s+(pam_pwhistory\.so|pam_unix\.so)\s+)(.*)$/\1\4 remember=5/' $PTF fi authselect apply-changes
+
+  - name: 5.4.3 Ensure password reuse is limited
+    shell: |
+      sudo grep -P '^\h*password\h+(requisite|sufficient)\h+(pam_pwhistory\.so|pam_unix\.so)\h+([^#\n\r]+\h+)?remember=([5-9]|[1-9][0-9]+)\h*(\h+.*)?$' /etc/pam.d/system-auth
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.4.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.4.4 Remediation for password hashing algorithm will SHA-512
+    shell:
+      CP=$(authselect current | awk 'NR == 1 {print $3}' | grep custom/) for FN in system-auth password-auth; do [[ -z $(grep -E '^\s*password\s+sufficient\s+pam_unix.so\s+.*sha512\s*.*$' $PTF) ]] && sed -ri 's/^\s*(password\s+sufficient\s+pam_unix.so\s+)(.*)$/\1\2 sha512/' $PTF done authselect apply-changes
+
+  - name: 5.4.4 Ensure password hashing algorithm is SHA-512
+    shell: |
+      sudo grep -E '^\s*password\s+sufficient\s+pam_unix.so\s+.*sha512\s*.*$' /etc/pam.d/password-auth /etc/pam.d/system-auth
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.4.4 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.1.1 Remediation. Editing the /etc/login.defs file (Delete PASS_MAX_DAYS param)
+    lineinfile:
+      dest: /etc/login.defs
+      regexp: '^#?\s*(?i)PASS_MAX_DAYS'
+      state: absent
+
+  - name: 5.5.1.1 Remediation. Editing the /etc/login.defs file (Add PASS_MAX_DAYS param)
+    lineinfile:
+      dest: /etc/login.defs
+      insertafter: EOF
+      line: 'PASS_MAX_DAYS 365'
+
+  - name: 5.5.1.1 Ensure password expiration is 365 days or less
+    shell: |
+      grep PASS_MAX_DAYS /etc/login.defs
+      grep -E '^[^:]+:[^!*]' /etc/shadow | cut -d: -f1,5
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.1.1 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.1.2 Remediation. Editing the /etc/login.defs file (Delete PASS_MIN_DAYS param)
+    lineinfile:
+      dest: /etc/login.defs
+      regexp: '^#?\s*(?i)PASS_MIN_DAYS'
+      state: absent
+
+  - name: 5.5.1.2 Remediation. Editing the /etc/login.defs file (Add PASS_MIN_DAYS param)
+    lineinfile:
+      dest: /etc/login.defs
+      insertafter: EOF
+      line: 'PASS_MIN_DAYS 7'
+
+  - name: 5.5.1.2 Remediation. Modifying user parameters
+    shell:
+      sudo chage --mindays 7 slava
+
+  - name: 5.5.1.2 Ensure minimum days between password changes is 7 or more
+    shell: |
+      grep ^\s*PASS_MIN_DAYS /etc/login.defs
+      grep -E ^[^:]+:[^\!*] /etc/shadow | cut -d: -f1,4
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.1.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.1.3 Remediation. Editing the /etc/login.defs file (Delete PASS_WARN_AGE param)
+    lineinfile:
+      dest: /etc/login.defs
+      regexp: '^#?\s*(?i)PASS_WARN_AGE'
+      state: absent
+
+  - name: 5.5.1.3 Remediation. Editing the /etc/login.defs file (Add PASS_WARN_AGE param)
+    lineinfile:
+      dest: /etc/login.defs
+      insertafter: EOF
+      line: 'PASS_WARN_AGE 7'
+
+  - name: 5.5.1.3 Remediation. Modifying user parameters
+    shell:
+      chage --warndays 7 slava
+
+  - name: 5.5.1.3 Ensure password expiration warning days is 7 or more
+    shell: |
+      grep PASS_WARN_AGE /etc/login.defs
+      grep -E ^[^:]+:[^\!*] /etc/shadow | cut -d: -f1,6
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.1.3 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.1.4 Remediation. Seting the default password inactivity period to 30 days
+    shell: |
+      useradd -D -f 30
+      chage --inactive 30 <user>
+
+  - name: 5.5.1.4 Ensure inactive password lock is 30 days or less
+    shell: |
+      useradd -D | grep INACTIVE
+      grep -E ^[^:]+:[^\!*] /etc/shadow | cut -d: -f1,7
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.1.4 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.1.5 Ensure all users last password change date is in the past
+    shell: |
+      for usr in $(cut -d: -f1 /etc/shadow); do [[ $(chage --list $usr | grep '^Last password change' | cut -d: -f2) > $(date) ]] && echo "$usr :$(chage --list $usr | grep '^Last password change' | cut -d: -f2)"; done
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.1.5 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+#  - name: 5.5.2 Remediation. Seting the shell for accounts to nologin. Locking non root accounts.
+#    shell: |
+#      usermod -s $(which nologin) <user>
+#      usermod -L <user>
+
+  - name: 5.5.2 Remediation. Seting all system accounts to a non login shell
+    shell: |
+      awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' && $7!="'"$(which nologin)"'" && $7!="/bin/false") {print $1}' /etc/passwd | while read user do usermod -s $(which nologin) $user done
+
+  - name: 5.5.2 Remediation. Locking not root system accounts
+    shell: |
+      awk -F: '($1!="root" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!="L" && $2!="LK") {print $1}' | while read user do usermod -L $user done
+
+  - name: 5.5.2 Ensure system accounts are secured
+    shell: |
+      awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' && $7!="'"$(which nologin)"'" && $7!="/bin/false") {print}' /etc/passwd
+      awk -F: '($1!="root" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!="L" && $2!="LK") {print $1}'
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.2 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.3 Remediation. Editing the /etc/profile file (Delete TMOUT param)
+    lineinfile:
+      dest: /etc/profile
+      regexp: '^#?\s*(?i)TMOUT'
+      state: absent
+
+  - name: 5.5.3 Remediation. Editing the /etc/profile file (Add TMOUT param)
+    lineinfile:
+      dest: /etc/profile
+      insertafter: EOF
+      line: 'readonly TMOUT=900 ; export TMOUT'
+
+  - name: 5.5.3 Ensure default user shell timeout is 900 seconds or less
+    shell: |
+      #!/bin/bash output1="" output2="" [ -f /etc/bashrc ] && BRC="/etc/bashrc" for f in "$BRC" /etc/profile /etc/profile.d/*.sh ; do grep -Pq '^\s*([^#]+\s+)?TMOUT=(900|[1-8][0-9][0-9]|[1-9][0-9]|[1-9])\b' "$f" && grep -Pq '^\s*([^#]+;\s*)?readonly\s+TMOUT(\s+|\s*;|\s*$|=(900|[1-8][0-9][0-9]|[1-9][0-9]|[1-9]))\b' "$f" && grep -Pq '^\s*([^#]+;\s*)?export\s+TMOUT(\s+|\s*;|\s*$|=(900|[1-8][0-9][0-9]|[1-9][0-9]|[1-9]))\b' "$f" && output1="$f" done grep -Pq '^\s*([^#]+\s+)?TMOUT=(9[0-9][1-9]|9[1-9][0-9]|0+|[1-9]\d{3,})\b' /etc/profile /etc/profile.d/*.sh "$BRC" && output2=$(grep -Ps '^\s*([^#]+\s+)?TMOUT=(9[0-9][1-9]|9[1-9][0-9]|0+|[1-9]\d{3,})\b' /etc/profile /etc/profile.d/*.sh $BRC) if [ -n "$output1" ] && [ -z "$output2" ]; then echo -e "\nPASSED\n\nTMOUT is configured in: \"$output1\"\n" else [ -z "$output1" ] && echo -e "\nFAILED\n\nTMOUT is not configured\n" [ -n "$output2" ] && echo -e "\nFAILED\n\nTMOUT is incorrectly configured in: \"$output2\"\n" fi
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.3 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.4 Remediation. Sing all system accounts to a non login shell
+    shell: |
+      sudo usermod -g 0 root
+
+  - name: 5.5.4 Ensure default group for the root account is GID 0
+    shell: |
+      grep "^root:" /etc/passwd | cut -f4 -d: 0
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.4 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.5.5 Remediation. Editing the /etc/login.defs file (Delete UMASK param)
+    lineinfile:
+      dest: /etc/login.defs
+      regexp: '^#?\s*(?i)UMASK'
+      state: absent
+
+  - name: 5.5.5 Remediation. Editing the /etc/profile file (Delete UMASK param)
+    lineinfile:
+      dest: /etc/profile
+      regexp: '^#?\s*(?i)UMASK'
+      state: absent
+
+  - name: 5.5.5 Remediation. Editing the /etc/bashrc file (Delete UMASK param)
+    lineinfile:
+      dest: /etc/bashrc
+      regexp: '^#?\s*(?i)UMASK'
+      state: absent
+
+  - name: 5.5.5 Remediation. Editing the /etc/login.defs file (Add UMASK param)
+    lineinfile:
+      dest: /etc/login.defs
+      insertafter: EOF
+      line: 'UMASK 027'
+
+  - name: 5.5.5 Creating a set_umask file
+    lineinfile: 
+      dest: /etc/profile.d/set_umask.sh
+      regexp: '^'
+      line: 'umask 027'
+      state: present
+      create: True
+
+  - name: 5.5.5 Ensure default user umask is 027 or more restrictive
+    shell: |
+      grep -RPi '(^|^[^#]*)\s*umask\s+([0-7][0-7][01][0-7]\b|[0-7][0-7][0-7][0-6]\b|[0-7][01][0-7]\b|[0-7][0-7][0-6]\b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+\b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?\b)' /etc/login.defs /etc/profile* /etc/bashrc*
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.5.5 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.6 Ensure root login is restricted to system console
+    shell: |
+      sudo cat /etc/securetty
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.6 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
+
+  - name: 5.7 Remediation. Editing the /etc/pam.d/su file
+    lineinfile:
+      dest: /etc/pam.d/su
+      insertafter: EOF
+      line: 'auth required pam_wheel.so use_uid'
+
+  - name: 5.5.5 Remediation. Editing the /etc/group file (Delete users)
+    lineinfile:
+      dest: /etc/group
+      regexp: '^#?\s*(?i)wheel:x:10:'
+      state: absent
+
+  - name: 5.7 Remediation. Editing the /etc/group file (Add users)
+    lineinfile:
+      dest: /etc/group
+      insertafter: EOF
+      line: 'wheel:x:10:{{allowuserlist}}'
+
+  - name: 5.7 Remediation. Editing the /etc/group file (Add commas)
+    replace:
+      dest: /etc/group
+      regexp: '^wheel:x:10:(.*)\s(.*)\s(.*)\s(.*)'
+      replace: 'wheel:x:10:\1,\2,\3'
+
+  - name: 5.7 Ensure access to the su command is restricted
+    shell: |
+      grep pam_wheel.so /etc/pam.d/su
+      grep wheel /etc/group
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.7 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
