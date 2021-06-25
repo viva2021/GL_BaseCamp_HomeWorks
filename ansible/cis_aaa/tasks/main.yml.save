@@ -1,0 +1,23 @@
+#----------------------------------------------------------------
+
+  - name: 5.2.13 Remediation. Editing the /etc/ssh/sshd_config file
+    lineinfile: dest=/etc/ssh/sshd_config
+      regexp='^'
+      backrefyes
+      insertafter=EOF
+      line='ClientAliveInterval 900\nClientAliveCountMax 0'
+
+  - name: 5.2.13 Ensure SSH Idle Timeout Interval is configured
+    shell: |
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep clientaliveinterval
+      sudo sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname) /etc/hosts | awk '{print $1}')" | grep clientalivecountmax
+      sudo grep -Ei '^\s*ClientAliveInterval\s+(0|9[0-9][1-9]|[1-9][0-9][0-9][0-9]+|1[6-9]m|[2-9][0-9]m|[1-9][0-9][0-9]+m)\b' /etc/ssh/sshd_config
+      sudo grep -Ei '^\s*ClientAliveCountMax\s+([1-9]|[1-9][0-9]+)\b' /etc/ssh/sshd_config
+    register: response
+    failed_when: "'FAILED' in response.stderr"
+
+  - name: 5.2.13 print result
+    debug:
+      var: response.stdout_lines
+
+#----------------------------------------------------------------
